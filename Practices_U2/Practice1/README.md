@@ -58,3 +58,36 @@ println(s"pValues = ${chi.getAs[Vector](0)}")
 println(s"degreesOfFreedom ${chi.getSeq[Int](1).mkString("[", ",", "]")}")
 println(s"statistics ${chi.getAs[Vector](2)}")
 ```
+# Summarizer
+Library Imports
+```scala
+import org.apache.spark.ml.linalg.{Vector, Vectors}
+import org.apache.spark.ml.stat.Summarizer
+```
+Here a dataset with vectors is created converting the vector into a dense vector
+```scala
+val data = Seq(
+  (Vectors.dense(2.0, 3.0, 5.0), 1.0),
+  (Vectors.dense(4.0, 6.0, 7.0), 2.0)
+)
+```
+Dataframe created
+```scala
+val df = data.toDF("features", "weight")
+```
+using Summarizer to compute the mean and variance for a vector column of the input dataframe with a weight column.
+```scala
+val (meanVal, varianceVal) = df.select(metrics("mean", "variance")
+  .summary($"features", $"weight").as("summary"))
+  .select("summary.mean", "summary.variance")
+  .as[(Vector, Vector)].first()
+
+  println(s"with weight: mean = ${meanVal}, variance = ${varianceVal}")
+```
+using Summarizer to compute the mean and variance for a vector column of the input dataframe without a weight column.
+```scala
+val (meanVal2, varianceVal2) = df.select(mean($"features"), variance($"features"))
+  .as[(Vector, Vector)].first()
+
+println(s"without weight: mean = ${meanVal2}, sum = ${varianceVal2}")
+```
