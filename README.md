@@ -1,6 +1,6 @@
 Big data proyects:
 
-In the branch named _"Unit 2"_ we have the following proyects:
+In the branch named _"Unit 3"_ we have the following proyects:
 
 - 1 Test:
 
