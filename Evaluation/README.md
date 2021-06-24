@@ -68,11 +68,11 @@ The primary goal of these kernel functions (ie, linear, polynomial, radial-based
   
 Support vector machines are a machine learning technique that finds the best possible separation between classes. With two dimensions it is easy to understand what you are doing. Typically, machine learning problems have many dimensions. So instead of finding the optimal line, the SVM finds the hyperplane that maximizes the separation margin between classes.
 
-![imagen](https://github.com/Omar-I/BigData/blob/Unit_4/Images/SVM.png)
+![imagen](https://github.com/Omar-I/BigData/blob/Unit_4/Images/SVM.jpg)
 
 It's called "machine" in Spanish because of the "machine" learning part. The support vectors are the points that define the maximum margin of separation of the hyperplane that separates the classes. They are called vectors, instead of points, because these "points" have as many elements as the dimensions of our input space. That is, these multi-dimensional points are represented with an n-dimensional vector.
 
-![imagen](https://github.com/Omar-I/BigData/blob/Unit_4/Images/SVM2.png) 
+![imagen](https://github.com/Omar-I/BigData/blob/Unit_4/Images/SVM2.jpg) 
 
 Learning SVM is one of the many methods of Machine Learning. Compared to the other ML methods, SVM is very powerful at recognizing subtle patterns in complex data sets. SVM can be used to recognize handwriting, recognize fraudulent credit cards, identify a speaker, and detect faces. Cancer is a genetic disease in which patterns of genomic features or patterns of feature function may represent cancer subtypes, prognosis of outcomes, prediction of drug benefit, drivers of tumorigenesis, or a biological process. tumor specific. Therefore, SVM Artificial Intelligence can help us recognize these patterns in a variety of applications.
 
@@ -82,7 +82,7 @@ Learning SVM is one of the many methods of Machine Learning. Compared to the oth
 <div align="justify">
 A normal tree includes roots, branches, and leaves. The same structure is followed in the decision tree. Contains root node, branches, and leaf nodes. The test of an attribute is in each internal node, the result of the test is in branch and class as a result, the label is in the leaf node. A root node is the parent of all nodes and, as the name suggests, is the highest node in the Tree. A decision tree is a tree where each node shows a characteristic (attribute), each link (branch) shows a decision (rule), and each leaf shows a result (categorical or continues value). As decision trees mimic human-level thinking, it is very easy to obtain the data and generate good interpretations. The idea is to create a tree like this for all the data and process a single result on each sheet.  
    
-![imagen](https://github.com/Omar-I/BigData/blob/Unit_4/Images/DTC.png)
+![imagen](https://github.com/Omar-I/BigData/blob/Unit_4/Images/DTC.jpg)
 
 The decision tree makes all possible alternatives explicit and tracks each alternative to its conclusion in a single view, to facilitate comparison between the different alternatives. Transparent by nature is one of the best advantages of
 Decision tree. Another main advantage is the possibility to select the largest quantity
@@ -103,7 +103,7 @@ The basic idea behind any decision tree algorithm is as follows:
 - No more attributes left.
 - There are no more instances.
 
-![imagen](https://github.com/Omar-I/BigData/blob/Unit_4/Images/DTC2.png)
+![imagen](https://github.com/Omar-I/BigData/blob/Unit_4/Images/DTC2.jpg)
 </div>
 
 
@@ -118,7 +118,7 @@ binomial: the target variable can only have 2 possible types: "0" or "1" which c
 multinomial: the target variable can have 3 or more possible types that are not ordered (that is, the types are not quantitatively important) such as "disease A" versus "disease B" versus "disease C".
 ordinal: deals with target variables with ordered categories. For example, a test score can be classified as: "very poor", "poor", "good", "very good". Here, each category can be given a score such as 0, 1, 2, 3.
 
-![imagen](https://github.com/Omar-I/BigData/blob/Unit_4/Images/LR.png)
+![imagen](https://github.com/Omar-I/BigData/blob/Unit_4/Images/LR.jpg)
 
 The logistic term is derived from the cost function (logistic function) which is a type of sigmoid function known for its characteristic S-shaped curve. A logistic regression model predicts probability values that are assigned to two (binary classification) or plus (multiclass classification) classes.
 </div>
@@ -134,7 +134,7 @@ Propagation in which the output result of the network is calculated from the inp
 Learning in which the errors obtained at the output of the perceptron are propagated backwards (backpropagation) with the aim of modifying the weights of the connections so that the estimated value of the network increasingly resembles the real one, this approach is carried out using the gradient function of the error.
 
 
-![imagen](https://github.com/Omar-I/BigData/blob/Unit_4/Images/MLPC.png)
+![imagen](https://github.com/Omar-I/BigData/blob/Unit_4/Images/MLPC.jpg)
 
 Architecture  
 Layers can be classified into three types:
