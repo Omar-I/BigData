@@ -1,109 +1,69 @@
 # Test 2
-# Develop the following instructions in Spark with the Scala programming language, using only the documentation of the Machine Learning Mllib library from Spark and Google.
+# Develop the following instructions in Spark with the Scala programming language.   
 
-## 1.- Load into a dataframe Iris.csv and elaborate the necessary data cleaning to be processed by the Machine Learning algorithm corresponding to multilayer perceptron  
+## 1.- Import a simple Spark session. 
 
-To start, the first thing we need to do is import all libraries including the "SparkSession" library and create a Spark variable then Load the file "iris CSV"
+To start, the first thing we need to do is import the sparksession library 
 ``` scala
-import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
-import org.apache.spark.ml.classification.MultilayerPerceptronClassifier
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.types.IntegerType
-import org.apache.spark.ml.feature.StringIndexer 
+```
+
+## 2.- Use the lines of code to minimize errors.
+Log4j is a message log library which serves to record a certain transaction that happens at runtime. By default log4j has 8 priority levels for messages and one of them is ERROR which is used for error messages that you want to save and is a type of event that affects
+to the program but lets it keep running
+``` scala
+import org.apache.log4j._
+Logger.getLogger("org").setLevel(Level.ERROR)
+```
+## 3.- Create an instance of the Spark session
+``` scala
+val spark = SparkSession.builder().getOrCreate()
+```
+## 4.- Import the K Means library for the clustering algorithm.
+The following is to import the k means library to be able to use the kmeans algorithm which is a grouping algorithm which allows us to group data in a predefined number of groups
+``` scala
+import org.apache.spark.ml.clustering.KMeans
+```
+## 5.- Loads the Wholesale Customers Data dataset
+here we create a Spark variable to Load the CSV file
+``` scala
+val data = spark.read.option("header", "true").option("inferSchema","true")csv("Wholesale customers data.csv")
+```
+## 6.- Select the following columns: Fresh, Milk, Grocery, Frozen, Detergents Paper, Delicatessen and call this set feature_data
+We use the select function to select the columns that we need from the dataset
+``` scala
+val feature_data = data.select("Fresh", "Milk", "Grocery", "Frozen", "Detergents_Paper", "Delicassen")
+```
+## 7.- Import Vector Assembler and Vector
+``` scala
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.ml.linalg.Vectors
-import org.apache.spark.ml.feature.VectorIndexer
-import org.apache.spark.ml.feature.IndexToString
+```
+## 8.- Create a new Vector Assembler object for the feature columns as an input set, remembering that there are no labels
+Here we use the 'VectorAssembler' method to combine all the columns of the array into a single vector column
+``` scala
+val assembler = new VectorAssembler().setInputCols(Array("Fresh", "Milk", "Grocery", "Frozen", "Detergents_Paper", "Delicassen")).setOutputCol("features")
+```
+## 9.- Use the assembler object to transform feature data
+Here we transform the data with the method transform
+``` scala
+val featuredataset = assembler.transform(feature_data)
+featuredataset.show(5)
+```
+## 10.- Create a K Means model with K = 3
+Set the number of clusters to create and Set the random seed for cluster initialization
+``` scala
+val kmeans = new KMeans().setK(3).setSeed(1L)
+val model = kmeans.fit(featuredataset)
+```
+## 11.- Evaluate the groups using Within Set Sum of Squared Errors WSSSE and print the centroids.
+We then compute Within Set Sum of Squared Error (WSSSE) showing the result
+``` scala
+val WSSSE = model.computeCost(featuredataset)
+println(s"Within set sum of Squared Errors = $WSSSE")
 
-val spark = SparkSession.builder().getOrCreate()
-
-/* Habilitaremos el 'header = true' para que spark infiera en los tipos de datos.
-Limpiamos el dataset de datos nulos utilizando 'na.drop' */
-
-val data = spark.read.option("header", "true").option("inferSchema","true")csv("iris.csv")
-data.na.drop()
+println("Clusters centers: ")
+model.clusterCenters.foreach(println)
 ```
 
-## 2.- What are the names of the columns?
-To show the column names we use "df.column"
-``` scala
-df.columns
-```
-## 3.- How is the schema like?
-The function "printSchema()" will show us the info we require
-``` scala
-df.printSchema()
-```
-## 4.- Print the first 5 columns
-To show the first 5 columns we use the function select.show with the parameter 5
-``` scala
-data.show(5)
-```
-## 5.- Use "describe()" method to learn about the dataframe
-We call the function "describe().show()"
 
-``` scala
-df.describe().show()
-```
-## 6.- Make the pertinent transformation for the categorical data which will be our labels to be classified. 
-to transform the data we use the 'VectorAssembler' method to combine all the columns of the array into a single vector column
-``` scala
-val assembler = new VectorAssembler().setInputCols(Array("sepal_length","sepal_width","petal_length","petal_width")).setOutputCol("features")
-val asmb = assembler.transform(data)
-asmb.show()
-```
-With the 'StringIndexer' method we gather a column of strings and set them as indexes and then we print the found values
-``` scala
-val labelIndexer = new StringIndexer().setInputCol("species").setOutputCol("indexedspecies").fit(data)
-val lblInd = new StringIndexer().setInputCol("species").setOutputCol("indexedspecies")
-val indx = lblInd.fit(data).transform(data)
-indx.show()
-
-println(s"Found species: ${labelIndexer.labels.mkString("[", ", ", "]")}")
-```
-Here we create a new dataframe based on the data of the main dataframe 'data' renaming the column of the indexes
-``` scala
-val indexed = labelIndexer.transform(data).withColumnRenamed("indexedSpecies", "label")
-val features = assembler.transform(indexed)
-features.show()
-```
-With the 'StringIndexer' method we sort the columns of the string according to the frequency of occurrence. The input data will be "label" and the output data will be "indexedSpecies"
-``` scala
-val featureIndexer = new StringIndexer().setInputCol("label").setOutputCol("indexedSpecies").fit(indexed)
-```
-We now allocate 60% of the data for training and 40% for testing. We also assign a random seed for the data.
-``` scala
-val splits = features.randomSplit(Array(0.6, 0.4), seed = 1234L)
-val train = splits(0)
-val test = splits(1)
-```
-Here we establish our neural network with 4 layers:  
-- 1 input layer with 4 neurons 
-- 2 hidden layers of 5 and 4 neurons respectively  
-- 1 output layer with 3 neurons  
-``` scala
-val layers = Array[Int](4, 5, 4, 3)
-```
-## 7.- Build the classification model and explain its architecture.
-Now we create the trainer setting the corresponding parameters:  
-- SetLayers for the structure of the previously constructed layers  
-- Setblocksize for the block size for the input data
-- The seed or the seed with its respective weight
-- And the maxiter as the number of maximum iterations to be performed
-``` scala
-val trainer = new MultilayerPerceptronClassifier().setLayers(layers).setBlockSize(128).setSeed(1234L).setMaxIter(100)     
-
-//Inicio del entrenamiento
-val model = trainer.fit(train) 
-val result = model.transform(test) 
-```
-MulticlassClassificationEvaluator receives two input values: prediction and label and as output it shows the precision of the test
-``` scala
-val predictionAndLabels = result.select("prediction", "label")
-val evaluator = new MulticlassClassificationEvaluator().setMetricName("accuracy")
-``` 
-## 8.- Print the model results
-Finally we can print the results of the model based on the precision obtained
-``` scala
-println(s"\n\nTest set accuracy = ${evaluator.evaluate(predictionAndLabels)}")
-```
